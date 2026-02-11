@@ -1,299 +1,182 @@
-# C41 Cinema: Hardware Research
-Fresh research, February 2025. Starting from scratch — what's the best hardware to run the full model stack?
+# C41 Cinema: Hardware Research & Architecture (February 2025)
+
+## Final Architecture: Two-Box Setup
+
+After extensive research into real-world builds, practitioner benchmarks, and community feedback from r/LocalLLaMA, the optimal architecture for C41 Cinema is a **two-machine setup**: a Mac Studio for always-on LLM inference and an NVIDIA workstation for AI content generation.
+
+### Why Two Boxes?
+
+- The LLM (chat, writing, coding, agents) should **never go down**. If the NVIDIA box is crunching a video gen job, your AI assistant stays responsive.
+- LLM inference benefits from unified memory (Mac). Gen work benefits from CUDA (NVIDIA). Each machine plays to its strengths.
+- Multi-user support: two people can use the LLM simultaneously while gen jobs run independently.
+- Clean separation of concerns. No resource conflicts.
 
 ---
 
-## THE PROBLEM
+## Machine 1: Mac Studio M3 Ultra 512GB (LLM Server)
 
-You need to run two fundamentally different workloads:
-
-**1. LLM Inference** — Large language models (up to ~1T parameter MoE). Needs massive memory capacity and bandwidth. Doesn't need CUDA.
-
-**2. Content Generation** — Image gen (Flux 2 Dev, Z-Image), video gen (Wan 2.2), lip-sync (HuMo), audio (MMAudio), TTS. Needs CUDA cores, tensor cores, and fast VRAM. These are all NVIDIA-dependent — ComfyUI, diffusers, PyTorch all run on CUDA.
-
-These two workloads have completely different hardware requirements. Trying to run both on the same machine means compromise. The smart move is **two machines, each optimized for its job**.
-
----
-
-## THE HARDWARE LANDSCAPE (Feb 2025)
-
-### Option A: Mac Studio M4 Ultra (for LLMs)
+**Purpose:** Always-on AI assistant for LLM chat, creative writing, coding, reasoning, agents.
 
 **Specs:**
-- M4 Ultra: 32-core CPU, 80-core GPU
-- Up to 512GB unified memory
-- Memory bandwidth: ~819 GB/s
-- Thunderbolt 5 (120 Gbps) for clustering
-- Power draw: ~150W under load
-- Price: ~$11,999 (512GB / 8TB config)
+- Apple M3 Ultra: 32-core CPU, 80-core GPU
+- 512GB unified memory
+- 819 GB/s memory bandwidth
+- Thunderbolt 5 connectivity
+- ~100W idle power draw
+- Silent operation
 
-**What it's good at:**
-- Massive unified memory means you can load models that won't fit in any GPU VRAM
-- Kimi K2-0905 (~1T MoE, ~350GB quantized) fits in a single 512GB machine
-- DeepSeek V3.2 (685B) at FP16 needs ~1.3TB — fits in a 2-machine cluster
-- Qwen3-235B at full FP16 (~470GB) fits in a single machine
-- GPT-OSS-120B (64GB native 4-bit) runs at ~97 tok/s — very fast daily driver
-- Quiet, low power, zero driver issues, works out of the box
-- MLX framework is mature and fast for inference
+**Estimated cost:** ~$11,000
 
-**What it's not good at:**
-- No CUDA. Cannot run ComfyUI, Stable Diffusion, or any diffusion-based generation
-- Slower per-token than equivalent NVIDIA VRAM (when model fits in VRAM)
-- Can't fine-tune or train models
-- Expensive per GB of memory vs. DDR4/DDR5 system RAM
+**What it runs:**
+- MiniMax M2.1 (7.777 creative writing score): ~30-40 tok/s, fits comfortably
+- GPT-OSS-120B (fast daily driver): blazing fast, fits easily
+- Qwen3-Coder-Next (coding): excellent speed
+- Any future model up to ~400GB
+- Kimi K2.5 (~350GB): fits but slower (~8-12 tok/s estimated). Acceptable for non-interactive use.
 
-**Real-world performance (from r/LocalLLaMA practitioners):**
-- 2x Mac Studio M3 Ultra 512GB running Kimi K2.5: **24 tok/s** (verified post, upvoted)
-- Single Mac Studio M4 Ultra 512GB on Qwen3-235B Q4: ~15 tok/s
-- 4x Mac Studio cluster on Kimi K2 Thinking: ~28 tok/s
-- M4 generation has 4x faster prompt processing than M3 (Apple fixed interconnect)
-- A llama.cpp developer with an M3 Ultra said they're considering clustering with an M5 when it comes out
+**Multi-user capability:** Two simultaneous users see minimal speed degradation (e.g., 30 tok/s per user drops to ~20 tok/s each). Both users get separate accounts, separate chat histories, and separate AI personalities through Open WebUI.
 
-**Community consensus:** Mac Studio is the king of "load giant models and just use them." If you don't need CUDA, it's the best dollar-per-useful-GB of memory you can buy, and it Just Works.
+**Why Mac?** Apple Silicon's unified memory architecture lets the CPU and GPU share the same 512GB memory pool. No other consumer platform offers 512GB of GPU-accessible memory in a silent, compact form factor.
 
 ---
 
-### Option B: NVIDIA RTX PRO 6000 Blackwell (for Generation)
+## Machine 2: NVIDIA AI Workstation (Gen Server)
+
+**Purpose:** AI image generation, video generation, audio generation, lip-sync, voice synthesis.
 
 **Specs:**
-- 96GB GDDR7 VRAM per card
-- Blackwell architecture, 5th gen Tensor Cores
-- PCIe Gen5 x16
-- FP4/FP8 native support
-- Price: ~$6,800-7,500 per card (estimated street price)
-- Power: ~350W TDP per card
+- AMD Threadripper PRO 7975WX (32-core)
+- ASUS Pro WS WRX90E-SAGE SE motherboard (7x PCIe x16 slots)
+- 64GB DDR5 ECC RAM
+- 1x NVIDIA RTX PRO 6000 Blackwell 96GB
+- 1600W 80+ Titanium PSU
+- 4TB NVMe SSD
+- Rack-mountable or quiet tower case
 
-**What it's good at:**
-- CUDA ecosystem — runs everything: ComfyUI, diffusers, PyTorch, all gen models
-- 96GB VRAM is enough for every generation model simultaneously
-- Flux 2 Dev, Wan 2.2, Z-Image, HuMo, MMAudio all fit comfortably
-- Tensor cores accelerate diffusion model inference dramatically
-- Can also run LLMs (but limited to what fits in VRAM)
-- LoRA training for client-specific models
-- Native FP4 quantization on hardware
+**Estimated cost:** ~$14,500-16,500
 
-**What it's not good at:**
-- 96GB is not enough for the large creative writing LLMs (Kimi K2-0905 at ~350GB)
-- Two cards = 192GB VRAM, still not enough for the biggest models
-- Expensive per GB compared to Mac unified memory
-- You'd need CPU RAM offloading for large LLMs, which tanks speed
-- Power hungry, needs beefy PSU, loud under load
+**What it runs (all on one 96GB GPU):**
+- Flux 2 Dev (image gen, non-human subjects): ~12GB VRAM
+- Z-Image (image gen, human subjects): fits easily
+- Wan 2.2 (video gen): ~40-60GB depending on resolution
+- HuMO lip-sync (68GB): fits in 96GB
+- MMAudio (video audio/SFX): small footprint
+- Qwen3-TTS (voice synthesis): small footprint
+- ComfyUI orchestrates all of the above
 
-**Real-world context:**
-- The Reddit poster planning 2x RTX PRO 6000 + 1TB DDR4 for Kimi K2.5 estimated 12-22 tok/s at 16K context — but that's with heavy CPU offloading. Mac cluster at 24 tok/s beats it with better latency consistency.
-- For generation workloads (ComfyUI), nothing touches NVIDIA. Period.
-- One RTX PRO 6000 is more than enough for all generation tasks. You'd only need two if you want to run a large LLM AND generate simultaneously.
+**Why Threadripper?**
+- Future-proof platform: 7 PCIe x16 slots means adding a second (or third) RTX PRO 6000 later is trivial
+- 1600W PSU has headroom for additional GPUs
+- Workstation-grade reliability for 24/7 operation
+- 32-core CPU matches the Mac Studio's core count
 
----
-
-### Option C: NVIDIA DGX Spark
-
-**Specs:**
-- GB10 Grace Blackwell Superchip
-- 128GB unified LPDDR5x memory
-- Memory bandwidth: 273 GB/s
-- 1 PFLOP FP4 performance
-- Price: ~$3,000
-- Power: ~140W TDP
-
-**Why it doesn't work for you:**
-- 128GB is not enough for your model stack — Kimi K2-0905 alone needs ~350GB
-- Memory bandwidth (273 GB/s) is much worse than Mac Studio (819 GB/s)
-- Community consensus: "disappointing inference performance" (Level1Techs review)
-- Can't run ComfyUI or generation workloads (ARM Linux, limited CUDA ecosystem maturity)
-- Would need multiple units plus linking to match a single Mac Studio
-- The DGX Spark is designed for prototyping models up to 200B, not running 1T MoE monsters
-
-**Verdict: Skip it.** It's a developer toy, not a production inference machine at your scale.
+**Why RTX PRO 6000?**
+- 96GB GDDR7 VRAM: every gen model fits in a single GPU
+- Outperforms the H100 on single-GPU inference (3,140 vs 2,987 tok/s in benchmarks)
+- Full CUDA ecosystem: ComfyUI, PyTorch, vLLM all optimized for NVIDIA
+- Blower-style cooler designed for workstation/rack environments
 
 ---
 
-### Option D: Framework Desktop (AMD)
+## Total Investment
 
-**Specs:**
-- AMD Strix Halo APU
-- Up to 128GB LPDDR5x unified memory
-- ~256 GB/s memory bandwidth
-- Price: ~$2,500-3,000
-
-**Why it doesn't work for you:**
-- 128GB max memory — same problem as DGX Spark
-- Vulkan, not CUDA — most AI tools don't support it or support it poorly
-- No ComfyUI support (needs CUDA)
-- Interesting for hobbyists, not for your production stack
-
-**Verdict: Skip it.**
+| Component | Estimated Cost |
+|---|---|
+| Mac Studio M3 Ultra 512GB | ~$11,000 |
+| NVIDIA Workstation (platform) | ~$7,000-7,500 |
+| RTX PRO 6000 96GB | ~$7,000-9,500 |
+| **Total** | **~$25,500-27,500** |
 
 ---
 
-### Option E: Multi-GPU PC Workstation (for LLMs via CPU offload)
+## Existing Hardware (Not Part of Investment)
 
-The approach from the Reddit poster: 1TB DDR4 system RAM + 2x RTX PRO 6000, loading model weights into CPU RAM and using GPUs as a fast cache.
-
-**Specs (estimated build):**
-- Threadripper PRO or Xeon W with 1TB DDR4/DDR5 ECC
-- 2x RTX PRO 6000 (192GB VRAM total)
-- PCIe Gen4/5 x16 slots
-- Price: ~$20,000-25,000 total
-- Power: ~1,000W under load
-
-**Pros:**
-- Single machine does both LLM inference AND CUDA generation
-- 1TB system RAM holds any model
-- 192GB VRAM provides fast cache for hot MoE experts
-- Can run ComfyUI on the same GPUs
-
-**Cons:**
-- LLM performance tanks when model doesn't fit in VRAM — constant PCIe transfers
-- 12-22 tok/s estimated for Kimi K2.5 (vs. 24 tok/s on Mac cluster that costs less)
-- DDR4 bandwidth (~50 GB/s) is the bottleneck, not GPU compute
-- GPU memory is split between generation and LLM workloads
-- Complex build — driver issues, IOMMU, NCCL, ACS settings
-- Loud, power hungry, heat management is real
-- When generating images/video, LLM performance drops further
-
-**Verdict: Technically works, but you're paying more for worse LLM performance, and you create resource contention between your two main workloads.**
+Kyle's current desktop (Ryzen 9 7950X + RTX 5090 32GB) serves as the daily driver workstation and remote access terminal into both servers.
 
 ---
 
-## THE RECOMMENDATION: Two-Machine Architecture
+## Research: Builds People Are Actually Running
 
-### Machine 1: Mac Studio M4 Ultra 512GB — "The Brain"
-**Role:** All LLM inference (creative writing, coding, daily driver, heavy reasoning)
-**Price:** ~$11,999
+### Verified Practitioner Benchmarks
 
-Runs via Ollama or llama.cpp (MLX backend). All your language models live here:
-- **Kimi K2-0905** (~350GB quantized) — your creative writing partner
-- **Qwen3-Coder-Next** or **Kimi K2.5** — coding
-- **GPT-OSS-120B** (64GB) — fast daily driver at ~97 tok/s
-- **DeepSeek V3.2** at aggressive quantization — heavy reasoning
-- **MiniMax M2.1** — balanced creative at 48 tok/s
+**Dual RTX PRO 6000 Workstation (192GB VRAM)**
+- Source: [r/LocalLLaMA](https://www.reddit.com/r/LocalLLaMA/comments/1qorbdk/)
+- Team building enterprise AI workstations
+- MiniMax M2.1 INT4: processes 64K tokens in ~15 seconds
+- Serves 4+ simultaneous users/agents
+- GPT-OSS-120B fits on single GPU with data-parallel across both
+- Full vLLM setup guide: [reddit.com/r/LocalLLaMA/comments/1pvk3d9/](https://www.reddit.com/r/LocalLLaMA/comments/1pvk3d9/)
 
-The 512GB unified memory means you can have multiple models loaded and switch between them instantly. Ollama handles load/unload automatically. No model competes with generation for resources.
+**Quiet Threadripper + RTX 5090 + 4x R9700 (160GB VRAM)**
+- Source: [r/LocalLLaMA](https://www.reddit.com/r/LocalLLaMA/comments/1qkghpk/)
+- 768GB DDR5, Fractal Design Define 7 XL
+- DeepSeek V3.1 Terminus with 37K context: PP 151 t/s, TG 10.85 tok/s
+- Builder confirmed system is quiet with power-limited GPUs
 
-**Why Mac Studio over a GPU workstation for LLMs:**
-- 819 GB/s memory bandwidth vs. ~50 GB/s DDR4 = 16x faster memory access
-- Models that fit entirely in unified memory run at full speed
-- No PCIe bottleneck — everything is on-die
-- 150W vs. 1000W power draw
-- Silent operation — can sit on your desk
-- Zero driver issues — plug in and go
+**10x GPU Build (8x 3090 + 2x 5090, 256GB VRAM)**
+- Source: [r/LocalLLaMA](https://www.reddit.com/r/LocalLLaMA/comments/1qi4uj2/)
+- ~$17K, built for graphic designer doing image/video gen
+- Kimi K2 TQ1: 19.61 tok/s, GLM 4.6 Q4KXL: 26.61 tok/s
 
-### Machine 2: GPU Workstation — "The Forge"
-**Role:** All CUDA-dependent generation (image, video, audio, lip-sync, LoRA training)
-**Price:** ~$8,000-10,000
+**4x R9700 + Threadripper 9955WX (128GB VRAM)**
+- Source: [r/LocalLLaMA](https://www.reddit.com/r/LocalLLaMA/comments/1qgdb7f/)
+- ~€9,800 new hardware
+- GPT-OSS-120B: 97.47 tok/s, MiniMax M2.1 Q4_K_M: 34.85 tok/s
+- Builder's own conclusion: "If I could do it again, I'd buy a single RTX PRO 6000 Blackwell instead."
 
-A focused build: doesn't need terabytes of RAM, just fast GPU compute.
+**2x GH200 96GB (192GB HBM3)**
+- Source: [r/LocalLLaMA](https://www.reddit.com/r/LocalLLaMA/comments/1qa1guo/) (706 upvotes)
+- €9,000 used datacenter hardware
+- MiniMax M2.1 FP8 with vLLM: 66-78 tok/s short context, 163K context window
+- Requires significant technical skill to set up
 
-**Build:**
-- CPU: AMD Ryzen 9 or Intel Core i9 (doesn't need to be server-grade)
-- RAM: 64-128GB DDR5 (just for feeding the GPU, managing video files)
-- GPU: 1x RTX PRO 6000 Blackwell 96GB (~$7,000)
-- Storage: 2TB NVMe (models + working files)
-- PSU: 850W
-- Case: Mid-tower with good airflow
+**Kimi K2.5 on RTX PRO 6000 (KTransformers)**
+- Source: [r/LocalLLaMA](https://www.reddit.com/r/LocalLLaMA/comments/1qriwnv/)
+- 1x PRO 6000 + Epyc + 1TB DDR5: PP 497 t/s, TG 15.56 tok/s at 32K context
+- 8x PRO 6000 (SGLang TP=8): TG 57.7 tok/s
 
-96GB VRAM is massive overkill for generation. For reference:
-- Flux 2 Dev: ~12GB VRAM
-- Wan 2.2 (video gen): ~24GB for 720p, ~40GB for 1080p
-- HuMo (lip-sync): ~35GB (17B model)
-- MMAudio: ~8GB
-- Z-Image: ~12GB
-- LoRA training: 20-40GB depending on model
+**RTX PRO 6000 vs H100 Benchmark**
+- Source: [r/LocalLLaMA](https://www.reddit.com/r/LocalLLaMA/comments/1p93r0w/) (58 upvotes)
+- Single GPU: PRO 6000 outperforms H100 (3,140 vs 2,987 tok/s)
+- At 28% lower cost
 
-You could run ALL of these simultaneously and still have VRAM headroom. The 96GB card future-proofs you for larger generation models.
-
-**Why only 1 GPU?**
-- Generation workloads don't benefit much from multi-GPU (they're batch-sequential, not parallelizable the way LLM inference is)
-- 96GB is more than enough for anything current
-- Saves $7K vs. buying two
-- Less power, less heat, less noise
-
-### How OpenClaw Connects Them
-
-OpenClaw sits on the Mac Studio (or your current Mac mini) and routes requests:
-
-```
-User → OpenClaw → [LLM request?] → Ollama on Mac Studio (localhost)
-                → [Image gen?]   → ComfyUI on GPU Workstation (LAN)
-                → [Video gen?]   → ComfyUI on GPU Workstation (LAN)
-                → [Audio gen?]   → MMAudio on GPU Workstation (LAN)
-                → [TTS?]         → Qwen3-TTS on Mac Studio (lightweight)
-```
-
-OpenClaw connects to the GPU workstation over your local network. ComfyUI exposes an API, and MMAudio/other tools can be wrapped in a simple HTTP server. Custom OpenClaw skills handle the routing:
-
-- **comfyui-image** skill: sends prompts to ComfyUI API on the workstation
-- **comfyui-video** skill: same, different workflow
-- **audio-gen** skill: calls MMAudio endpoint
-- **lip-sync** skill: calls HuMo endpoint
-
-The Mac Studio handles LLM inference locally (zero network latency). Generation requests go over LAN (negligible latency for batch jobs that take seconds anyway).
-
-**The key insight:** LLM inference needs instant responses (you're chatting). Generation is batch (you wait 10-60 seconds for an image/video regardless). Network latency only matters for the chatting part — and that stays local.
+**2x M3 Ultra 512GB (Exo Cluster)**
+- Source: [r/LocalLLaMA](https://www.reddit.com/r/LocalLLaMA/comments/1qpkbb4/)
+- Kimi K2.5: 24 tok/s over Thunderbolt 5
 
 ---
 
-## COST BREAKDOWN
+## Hardware Options Considered and Ruled Out
 
-| Item | Price |
-|------|-------|
-| Mac Studio M4 Ultra 512GB / 8TB | ~$11,999 |
-| GPU Workstation (1x RTX PRO 6000 + build) | ~$9,500 |
-| Peripherals, cables, networking | ~$500 |
-| **Total** | **~$22,000** |
-
-### vs. Previous Plan (2x Mac Studio + RTX PRO 6000)
-That was ~$28-33K. This is $6-11K cheaper and actually better because:
-- Single Mac Studio 512GB handles every LLM in the model stack
-- Second Mac Studio was only needed if you wanted full FP16 on 685B+ dense models — but quantized versions are nearly as good
-- You don't need two Mac Studios for a 2x cluster unless you're running DeepSeek V3.2 at full FP16 (which is overkill)
-
-### vs. All-NVIDIA Approach (1TB RAM + 2x RTX PRO 6000)
-That would be ~$20-25K but gives you:
-- Worse LLM performance (12-22 tok/s vs. 24+ tok/s)
-- Resource contention (GPU shared between LLM and gen)
-- More complexity (server-grade hardware, driver issues)
-- More power draw and noise
+| Option | Why Ruled Out |
+|---|---|
+| DGX Spark | 128GB max, 273 GB/s bandwidth, "disappointing" per Level1Techs |
+| Framework Desktop | 128GB max, Vulkan not CUDA |
+| 4x Mac Mini M4 cluster | 64GB max per Mini, TB4 = 10x slowdown |
+| Multi-GPU consumer builds (4-10 GPUs) | Loud, hot, high power, complex |
+| Used datacenter hardware (GH200, A100) | Requires significant expertise, no warranty, availability risk |
+| 2x M3 Ultra 512GB cluster | $22K+ just for LLM, marginal speed gain for the cost |
 
 ---
 
-## FUTURE-PROOFING
+## Future Expansion Path
 
-**If you outgrow 512GB:**
-- Add a second Mac Studio and cluster via Thunderbolt 5 (exo). Doubles memory to 1TB. Full FP16 on anything.
-- Cost: another ~$12K when needed, not now.
-
-**If you need more GPU:**
-- Add a second RTX PRO 6000 to the workstation. The build should have a second PCIe x16 slot ready.
-- Cost: another ~$7K when needed.
-
-**If M5 Ultra comes out:**
-- The M5 generation reportedly has 4x faster prompt processing. An M5 Ultra 512GB would be a meaningful upgrade for LLM inference speed.
-- Your RTX workstation stays the same — generation hardware has a longer useful life.
-
-**Model evolution:**
-- Models are getting more efficient, not less. MoE architectures mean you activate only a fraction of total parameters. Future 2T models might still only activate 60B per token, easily handled by 512GB.
-- Image/video models are also getting more efficient. The 96GB GPU card has years of headroom.
+1. **Add second RTX PRO 6000** to NVIDIA box if gen workload increases (board supports it)
+2. **Upgrade Mac Studio** when M5 Ultra ships (sell M3 Ultra, keep same architecture)
+3. **Add more RAM** to NVIDIA box if CPU offloading ever needed for LLMs
+4. **LoRA training** on RTX PRO 6000 for client-specific styles/characters
 
 ---
 
-## SHOULD YOU WAIT?
+## Key Software Stack
 
-**For the Mac Studio:** M4 Ultra is current generation and excellent. M5 Ultra is probably 12+ months away. If you're buying now, M4 Ultra is the move.
-
-**For the GPU:** RTX PRO 6000 Blackwell is just shipping. It's the current best. No reason to wait — there's always something newer coming, and the Blackwell architecture is a significant gen-over-gen improvement.
-
-**For models:** Models are dropping weekly. Hardware should be bought for the architecture class (MoE ~1T, diffusion gen), not specific model versions. Your hardware handles the class.
-
----
-
-## TL;DR
-
-**Buy two machines:**
-1. **Mac Studio M4 Ultra 512GB** (~$12K) — runs all LLMs, TTS, orchestration
-2. **GPU Workstation with 1x RTX PRO 6000** (~$9.5K) — runs all CUDA generation
-
-**Total: ~$22K.** Cheaper than the previous plan, better performance, cleaner separation, easier to maintain.
-
-OpenClaw orchestrates both over the network. LLMs stay local and fast. Generation goes to the GPU box. No resource contention. Each machine is optimized for its job.
+| Layer | Tool | Runs On |
+|---|---|---|
+| LLM Inference | Ollama / llama.cpp | Mac Studio |
+| LLM Web UI | Open WebUI | Mac Studio |
+| Orchestration | OpenClaw | Mac Studio (or either) |
+| Image Gen | ComfyUI + Flux 2 Dev / Z-Image | NVIDIA Workstation |
+| Video Gen | ComfyUI + Wan 2.2 | NVIDIA Workstation |
+| Lip Sync | HuMO | NVIDIA Workstation |
+| Video Audio | MMAudio | NVIDIA Workstation |
+| Voice / TTS | Qwen3-TTS | NVIDIA Workstation |
