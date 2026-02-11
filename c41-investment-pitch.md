@@ -16,28 +16,72 @@ Right now, most businesses pay monthly subscriptions to cloud AI services: ChatG
 
 ## The Problem with Cloud AI Subscriptions
 
-It's not just about cost. Cloud AI services actively limit what you can do, even on the most expensive plans:
+It's not just about cost. Cloud AI services actively limit what you can do, even on the most expensive plans. Here are the real numbers:
 
-**Usage caps and throttling.** Even premium subscriptions hit walls. Claude Max ($200/month) throttles you after heavy use, forcing you to wait or stop working. ChatGPT Pro has similar limits. When you're in the middle of a project and your AI stops responding because you've used too much, that's lost productivity you're paying for.
+### AI Chat/Writing (Claude, ChatGPT)
 
-**You pay for failures.** Video generation services like Runway charge per generation. If the output isn't what you wanted (wrong composition, weird artifacts, bad lighting), you pay the same amount and try again. On a local system, failed generations cost nothing. You can iterate 50 times dialing in the perfect result without watching credits drain.
+**Claude Max at $200/month** gives you "20x Pro usage," but Anthropic intentionally does not publish exact message counts. Their own support page tells users to "plan your conversations," "be specific and concise," and "batch similar requests" to avoid hitting limits. In practice, heavy users report getting throttled after a few hours of intensive work. When you hit the limit, you wait. There is no option to pay more to keep going.
 
-**Pricing changes without notice.** OpenAI, Anthropic, and others regularly adjust pricing, features, and limits. A service that costs $200/month today could cost $400 next quarter with no alternative.
+**ChatGPT Pro at $200/month** similarly throttles after heavy usage of their best models (o1, GPT-4o). OpenAI has changed these limits multiple times without notice.
 
-**Content restrictions.** Cloud services refuse to generate certain types of legitimate creative content. A local system has no content policies blocking your work.
+**On your own hardware:** Unlimited messages, 24 hours a day, 7 days a week. No throttling, no waiting. Two users simultaneously, each with their own private AI.
 
-**Comparison: Cloud Subscriptions vs. Owned Hardware**
+### AI Video Generation (Runway)
+
+Runway's pricing is credit-based. Here's what the actual plans look like:
+
+- **Standard ($12/month):** 625 credits = **25 seconds** of Gen-4.5 video. That's one short clip.
+- **Pro ($28/month):** 2,250 credits = **90 seconds** of Gen-4.5 video per month.
+- **Unlimited ($76/month):** Unlimited generations, but at a "relaxed rate" (slower, lower priority).
+
+Every failed generation burns the same credits as a successful one. If you generate a 10-second video clip and the lighting is wrong, or an arm looks weird, or the motion isn't right, you've spent those credits. Iterating 5 times on a single clip costs 5x the credits.
+
+To generate enough video content for a single client project (say, 10 usable 10-second clips), you might need 50-100 generations to get 10 good ones. At Pro tier, that's multiple months of credits for one project.
+
+**On your own hardware:** Generate as many videos as you want. Iterate 100 times on a single clip until it's perfect. The only cost is electricity.
+
+### AI Voice (ElevenLabs)
+
+ElevenLabs charges per character of text converted to speech. Their professional plans start at $99/month for limited characters. Custom voice cloning requires higher tiers.
+
+**On your own hardware:** Unlimited voice generation with Qwen3-TTS. No per-character charges.
+
+### AI Image Generation (Midjourney)
+
+Midjourney charges $10-60/month depending on tier, with GPU time limits. Their Pro plan ($60/month) gives 30 hours of GPU time. After that, you wait or pay more.
+
+**On your own hardware:** Generate images around the clock. No GPU time limits.
+
+### The Full Picture
+
+| Service | Monthly Cost | What You Get | Limitation |
+|---|---|---|---|
+| Claude Max | $200 | AI chat (1 user) | Throttled after heavy use, exact limits hidden |
+| ChatGPT Pro | $200 | AI chat (1 user) | Throttled after heavy use |
+| Runway Pro | $28 | 90 sec of video/month | Failed generations burn credits |
+| Midjourney Pro | $60 | 30 GPU hours/month | Queued during peak times |
+| ElevenLabs Scale | $99 | Limited voice characters | Per-character pricing |
+| **Per person total** | **$587/month** | | |
+| **Two users** | **$1,174/month** | | **$14,088/year** |
+
+And these are just the base plans. API usage for automation, additional credits for heavy months, and price increases all add up.
+
+**On your own hardware: $0/month for unlimited everything, for unlimited users.**
+
+### Comparison: Cloud Subscriptions vs. Owned Hardware
 
 | | Cloud Subscriptions | Your Own Hardware |
 |---|---|---|
-| Monthly cost | $700-1,500+/month | $0 after purchase |
-| Usage limits | Throttled after heavy use | Unlimited, 24/7 |
-| Failed generations | You still pay | Free to iterate |
+| Monthly cost | $587-1,174+/month (1-2 users) | $0 after purchase |
+| AI chat messages | Throttled, limits hidden | Unlimited, 24/7 |
+| Video generations | 90 seconds/month at $28/mo | Unlimited |
+| Failed video generations | Same cost as successful ones | Free to iterate |
+| Image generations | 30 GPU hours/month at $60/mo | Unlimited |
+| Voice generation | Per-character charges | Unlimited |
 | Data privacy | Sent to third-party servers | Never leaves your building |
 | Content restrictions | Subject to provider policies | None |
 | Multi-user access | Separate subscription per person | Unlimited users, one system |
-| Availability | Depends on provider uptime | You control it |
-| Ownership | You rent access | **You own it** |
+| Ownership | You rent access month-to-month | **You own it** |
 
 ---
 
@@ -71,17 +115,17 @@ All of these capabilities run through ComfyUI, an industry-standard interface th
 
 ## Why Own Instead of Subscribe?
 
-**Cost comparison over 3 years:**
+**Cost comparison over 3 years (2 users):**
 
 | Approach | Year 1 | Year 2 | Year 3 | 3-Year Total |
 |---|---|---|---|---|
-| Cloud subscriptions (conservative) | $8,400 | $8,400 | $8,400 | $25,200 |
-| Cloud subscriptions (heavy usage) | $18,000 | $18,000 | $18,000 | $54,000 |
+| Cloud subscriptions (2 users, base plans) | $14,088 | $14,088 | $14,088 | $42,264 |
+| Cloud subs + API overages and extra credits | $20,000+ | $20,000+ | $20,000+ | $60,000+ |
 | **Own the hardware** | **$26,500** | **$0** | **$0** | **$26,500** |
 
-Cloud subscription estimate based on: ChatGPT Pro ($200/mo), Midjourney ($120/mo), Runway ($150/mo), ElevenLabs ($99/mo), Claude Max ($200/mo), plus usage overages. Heavy usage includes API costs for automated workflows and multiple user seats.
+Based on actual published pricing: Claude Max $200/mo + ChatGPT Pro $200/mo + Runway Pro $28/mo + Midjourney Pro $60/mo + ElevenLabs $99/mo = $587/mo per user. Two users = $1,174/month = $14,088/year. And this still comes with all the throttling and credit limits described above.
 
-With conservative usage, the hardware pays for itself in about 3 years. With heavy usage, it pays for itself in under 18 months. After that, every month of use is pure savings. And the hardware retains significant resale value.
+The hardware pays for itself in under 2 years at base subscription rates. After that, every month is pure savings. And the hardware retains significant resale value (professional GPU and Apple hardware typically hold 50-70% of value after 2-3 years).
 
 **The real advantage isn't just cost. It's capacity.**
 
