@@ -8,7 +8,7 @@
 
 Artificial intelligence is transforming every creative industry. Agencies that can generate professional photos, videos, voice-overs, and written content with AI are delivering work faster, at higher margins, and winning clients that competitors can't serve.
 
-Right now, most businesses pay monthly subscriptions to cloud AI services: ChatGPT ($200/month), Midjourney ($120/month), Runway ($150/month), ElevenLabs ($99/month), and more. These costs scale with usage and the providers can change pricing, terms, or capabilities at any time. Your data goes through their servers. You own nothing.
+Right now, most businesses pay monthly subscriptions to cloud AI services: Claude ($200/month), Google Veo 3 ($250/month), ElevenLabs ($99/month), Nano Banana ($24/month), and more. These costs scale with usage and the providers can change pricing, terms, or capabilities at any time. Your data goes through their servers. You own nothing.
 
 **The alternative: own the infrastructure outright.** One upfront investment. You own the hardware. You own the AI. No monthly fees, no usage limits, no middleman.
 
@@ -96,16 +96,16 @@ During a busy client week, cloud limits force you to choose which projects get A
 
 | | Cloud Subscriptions | Your Own Hardware |
 |---|---|---|
-| Monthly cost | $587-1,174+/month (1-2 users) | $0 after purchase |
-| AI chat messages | Throttled, limits hidden | Unlimited, 24/7 |
-| Video generations | 90 seconds/month at $28/mo | Unlimited |
-| Failed video generations | Same cost as successful ones | Free to iterate |
-| Image generations | 30 GPU hours/month at $60/mo | Unlimited |
-| Voice generation | Per-character charges | Unlimited |
-| Data privacy | Sent to third-party servers | Never leaves your building |
-| Content restrictions | Subject to provider policies | None |
+| Monthly cost | $573-1,146+/month (1-2 users) | $0 after purchase |
+| AI chat messages | Throttled after heavy use, exact limits hidden | Unlimited, 24/7, no throttle |
+| Video generations | 250 full-quality/month ($250/mo Ultra), 5/day cap | Unlimited, no daily cap |
+| Failed video generations | Count against your limits | Free to iterate endlessly |
+| Image generations | ~125/month ($24/mo Pro) | Unlimited (~360/hour) |
+| Voice generation | ~4 hours/month ($99/mo Pro), $0.24/1K char overage | Unlimited, zero per-character cost |
+| Data privacy | Sent to Google, Anthropic, third-party servers | Never leaves your building |
+| Content restrictions | Subject to provider safety policies | No restrictions |
 | Multi-user access | Separate subscription per person | Unlimited users, one system |
-| Ownership | You rent access month-to-month | **You own it** |
+| Ownership | You rent access month-to-month | **You own it outright** |
 
 ---
 
@@ -145,11 +145,11 @@ All of these capabilities run through ComfyUI, an industry-standard interface th
 |---|---|---|---|---|
 | Cloud subscriptions (2 users, base plans) | $13,752 | $13,752 | $13,752 | $41,256 |
 | Cloud subs + overages and extra credits | $18,000+ | $18,000+ | $18,000+ | $54,000+ |
-| **Own the hardware** | **$26,500** | **$0** | **$0** | **$26,500** |
+| **Own the hardware** | **$25,500** | **$0** | **$0** | **$25,500** |
 
 Based on actual services C41 uses today: Claude Max $200/mo + Google AI Ultra $250/mo + ElevenLabs Pro $99/mo + Nano Banana Pro $24/mo = $573/mo per user. Two users = $1,146/month = $13,752/year. And this still comes with all the throttling, daily caps, and credit limits described above.
 
-The hardware pays for itself in under 2 years. After that, every month is pure savings. And the hardware retains significant resale value (professional GPU and Apple hardware typically hold 50-70% of value after 2-3 years).
+**The hardware pays for itself in under 2 years.** After that, every month is pure savings — $1,146/month going straight to the bottom line instead of subscription fees. By year 3, the total savings exceed $15,000. And the hardware retains significant resale value (professional GPU and Apple hardware typically hold 50-70% of value after 2-3 years).
 
 **The real advantage isn't just cost. It's capacity.**
 
@@ -161,10 +161,10 @@ On cloud subscriptions, there's a ceiling on how much work you can do in a day b
 
 | Item | Cost |
 |---|---|
-| Mac Studio M3 Ultra (512GB) | $11,000 |
-| AI Workstation (Threadripper PRO platform) | $7,500 |
-| NVIDIA RTX PRO 6000 GPU (96GB) | $8,000 |
-| **Total** | **$26,500** |
+| Mac Studio M3 Ultra (512GB, 32-core CPU, 80-core GPU) | $9,500 |
+| AI Workstation (Threadripper PRO 7975WX platform) | $7,500 |
+| NVIDIA RTX PRO 6000 GPU (96GB GDDR7) | $8,500 |
+| **Total** | **$25,500** |
 
 This is a one-time capital expenditure with no ongoing subscription fees.
 
@@ -197,9 +197,9 @@ The workstation platform is designed to be expandable. The motherboard has 7 GPU
 |---|---|---|
 | Platform | Apple Mac Studio | Custom Workstation |
 | Processor | M3 Ultra (32-core) | AMD Threadripper PRO 7975WX (32-core) |
-| Memory | 512GB unified | 64GB DDR5 ECC |
-| GPU | Integrated (80-core) | NVIDIA RTX PRO 6000 (96GB) |
-| Storage | 2TB+ SSD | 4TB NVMe SSD |
+| Memory | 512GB unified (819 GB/s bandwidth) | 64GB DDR5 ECC |
+| GPU | Integrated (80-core Apple Silicon) | NVIDIA RTX PRO 6000 (96GB GDDR7) |
+| Storage | 1TB SSD (configurable to 16TB) | 4TB NVMe SSD |
 | Power consumption | ~100W idle | ~500W under load |
 | Noise level | Silent | Quiet (workstation-grade cooling) |
 | Form factor | Compact desktop | Tower or rack-mount |
@@ -229,4 +229,4 @@ The workstation platform is designed to be expandable. The motherboard has 7 GPU
 
 ---
 
-*Prepared by C41 Cinema, February 2025*
+*Prepared by C41 Cinema, February 2026*

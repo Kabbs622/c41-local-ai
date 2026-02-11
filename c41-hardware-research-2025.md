@@ -25,16 +25,16 @@ After extensive research into real-world builds, practitioner benchmarks, and co
 - ~100W idle power draw
 - Silent operation
 
-**Estimated cost:** ~$11,000
+**Estimated cost:** ~$9,500 (base $3,999 + $1,500 CPU/GPU upgrade + $4,000 memory upgrade)
 
 **What it runs:**
-- MiniMax M2.1 (7.777 creative writing score): ~30-40 tok/s, fits comfortably
-- GPT-OSS-120B (fast daily driver): blazing fast, fits easily
+- MiniMax M2.1 (7.777 creative writing score): 38-42 tok/s at 4K context, 30 tok/s at 16K context (verified on exact hardware)
+- GPT-OSS-120B (fast daily driver): ~80 tok/s single user (verified on M2 Ultra, M3 Ultra similar bandwidth)
 - Qwen3-Coder-Next (coding): excellent speed
 - Any future model up to ~400GB
 - Kimi K2.5 (~350GB): fits but slower (~8-12 tok/s estimated). Acceptable for non-interactive use.
 
-**Multi-user capability:** Two simultaneous users see minimal speed degradation (e.g., 30 tok/s per user drops to ~20 tok/s each). Both users get separate accounts, separate chat histories, and separate AI personalities through Open WebUI.
+**Multi-user capability:** Two simultaneous users see moderate speed degradation. MiniMax M2.1 benchmark: single user 42 tok/s drops to ~25-30 tok/s each with two users (based on MoE batched inference characteristics). Both users get separate accounts, separate chat histories, and separate AI personalities through Open WebUI.
 
 **Why Mac?** Apple Silicon's unified memory architecture lets the CPU and GPU share the same 512GB memory pool. No other consumer platform offers 512GB of GPU-accessible memory in a silent, compact form factor.
 
@@ -53,13 +53,13 @@ After extensive research into real-world builds, practitioner benchmarks, and co
 - 4TB NVMe SSD
 - Rack-mountable or quiet tower case
 
-**Estimated cost:** ~$14,500-16,500
+**Estimated cost:** ~$16,000 (CPU ~$3,735 + mobo ~$1,291 + RAM ~$400 + GPU ~$8,500 + case/PSU/storage ~$2,000)
 
 **What it runs (all on one 96GB GPU):**
-- Flux 2 Dev (image gen, non-human subjects): ~12GB VRAM
+- Flux 2 Dev (image gen, non-human subjects): 90GB full precision, ~32GB quantized (fits 96GB GPU)
 - Z-Image (image gen, human subjects): fits easily
 - Wan 2.2 (video gen): ~40-60GB depending on resolution
-- HuMO lip-sync (68GB): fits in 96GB
+- HuMO lip-sync (24-32GB for 1.7B model, full 17B at 720p needs ~96GB): fits in 96GB
 - MMAudio (video audio/SFX): small footprint
 - Qwen3-TTS (voice synthesis): small footprint
 - ComfyUI orchestrates all of the above
@@ -82,10 +82,10 @@ After extensive research into real-world builds, practitioner benchmarks, and co
 
 | Component | Estimated Cost |
 |---|---|
-| Mac Studio M3 Ultra 512GB | ~$11,000 |
-| NVIDIA Workstation (platform) | ~$7,000-7,500 |
-| RTX PRO 6000 96GB | ~$7,000-9,500 |
-| **Total** | **~$25,500-27,500** |
+| Mac Studio M3 Ultra 512GB (32c CPU, 80c GPU) | ~$9,500 |
+| NVIDIA Workstation (platform: CPU, mobo, RAM, case, PSU, storage) | ~$7,500 |
+| RTX PRO 6000 96GB GDDR7 | ~$8,500 |
+| **Total** | **~$25,500** |
 
 ---
 

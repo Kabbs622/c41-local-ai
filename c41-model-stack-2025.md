@@ -53,9 +53,9 @@ For context, the closed models above them: Claude Opus 4.6 (8.561), GPT-5.2 (8.5
 - **Best for:** Code, technical work, AND creative writing when you need reasoning.
 
 #### GPT-OSS-120B — The All-Rounder
-- OpenAI's open-source model. MoE, ~3B active params. 64GB at full precision.
-- **Blazing fast.** 97 tok/s on a quad R9700 build. 31 tok/s on DGX Spark. One practitioner called it "the best all-around open model, nothing else matches it."
-- Natively trained in 4-bit. Consistent, reliable tool calling, great at everything.
+- OpenAI's open-source model. MoE, ~5.1B active params during inference. 61GB model data (MXFP4), ~65GB total with KV cache at 32K context.
+- **Fast.** ~80 tok/s on M2 Ultra 192GB (verified llama.cpp benchmark). ~97 tok/s on a quad R9700 build (different hardware). 65 tok/s on M3 Ultra 256GB (user report, lower spec config). On the 512GB M3 Ultra, expect ~80-85 tok/s single user.
+- Natively trained in MXFP4 (not standard 4-bit). Consistent, reliable tool calling, great at everything.
 - Lower creative writing score (7.030) but the speed and reliability make it the go-to daily driver for non-creative tasks.
 - Unsloth supports fine-tuning for GPT-OSS.
 - **Best for:** Fast daily driver, code, tool use, general tasks. Your "instant response" model.
@@ -119,7 +119,7 @@ For context, the closed models above them: Claude Opus 4.6 (8.561), GPT-5.2 (8.5
 | Baidu Ernie 4.5 | 300B | ~47B | ~600GB | ~150GB |
 | MiniMax M2.1 | 230B | ~10B | ~460GB | ~115GB |
 | GLM-4.7 | ~218B | ~32B | ~436GB | ~110GB |
-| GPT-OSS-120B | ~120B | ~3B | ~64GB (native 4-bit) | 64GB |
+| GPT-OSS-120B | ~117B | ~5.1B | 61GB (native MXFP4) | 61GB (native format is already 4-bit) |
 | Qwen3-Coder-Next | ~80B | ~3B | ~160GB | ~40GB |
 
 ---
@@ -258,7 +258,7 @@ A practitioner ran 12 standardized tests across 8 models, scoring composition, t
 
 **HuMo** (ByteDance, 17B)
 - Audio-driven face animation. "Looks way better than InfiniteTalk, especially facial emotion and lip movements fitting speech." (280 upvotes)
-- 68GB model. Kijai building ComfyUI integration.
+- 1.7B version: 24-32GB VRAM. Full 17B at 720p: ~96GB (4x24GB multi-GPU or single large GPU). Kijai building ComfyUI integration.
 - Currently limited to short clips (3-4 sec per gen).
 
 ### Most Mature

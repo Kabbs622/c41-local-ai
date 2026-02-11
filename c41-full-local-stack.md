@@ -9,16 +9,18 @@ Two machines, each doing what it's best at:
 
 ```
 ┌─────────────────────────────────┐     ┌─────────────────────────────────┐
-│     MAC STUDIO CLUSTER          │     │     GPU WORKSTATION             │
-│     2x M4 Ultra 512GB          │     │     RTX PRO 6000 96GB          │
-│                                 │     │                                 │
-│  ✦ OpenClaw (orchestration)     │     │  ✦ ComfyUI (all generation)    │
-│  ✦ Ollama (LLMs, always on)    │     │    - Image gen (FLUX, Qwen)    │
-│  ✦ TTS (Qwen3-TTS)             │     │    - Video gen (Wan 2.2)       │
-│  ✦ Light compute (ffmpeg, etc)  │     │    - Lip-sync (HuMo, etc)     │
-│                                 │     │    - Audio (MMAudio)           │
-│  1TB unified memory pooled      │     │    - Upscaling (SeedVR2)      │
-│  via exo for massive LLMs       │     │    - LoRA training             │
+│     MAC STUDIO                  │     │     NVIDIA WORKSTATION          │
+│     M3 Ultra 512GB             │     │     Threadripper PRO 7975WX     │
+│                                 │     │     RTX PRO 6000 96GB          │
+│  ✦ OpenClaw (orchestration)     │     │                                 │
+│  ✦ Ollama (LLMs, always on)    │     │  ✦ ComfyUI (all generation)    │
+│  ✦ Open WebUI (multi-user)     │     │    - Image gen (Flux 2 Dev,    │
+│  ✦ TTS (Qwen3-TTS)             │     │      Z-Image)                  │
+│  ✦ Light compute (ffmpeg, etc)  │     │    - Video gen (Wan 2.2)       │
+│                                 │     │    - Lip-sync (HuMo)           │
+│  512GB unified memory           │     │    - Audio (MMAudio)           │
+│  819 GB/s bandwidth             │     │    - Upscaling (SeedVR2)       │
+│                                 │     │    - LoRA training              │
 └─────────────────────────────────┘     └─────────────────────────────────┘
          │                                         │
          └──────────── Local Network ──────────────┘
@@ -27,63 +29,74 @@ Two machines, each doing what it's best at:
 ```
 
 **Why this split:**
-- Apple Silicon = best inference per watt for LLMs. Unified memory means a 235B model just works.
+- Apple Silicon = best inference per watt for LLMs. Unified memory means a 230B MoE model runs at 42 tok/s.
 - NVIDIA GPU = required for ComfyUI/CUDA generation. One 96GB card handles everything.
 - LLM is always loaded and instant. Generation never competes for memory.
 - If one machine has issues, the other still works.
 
 ---
 
-## THE BRAIN (Mac Studio Cluster)
+## THE BRAIN (Mac Studio)
 
-### Hardware: 2x Mac Studio M4 Ultra, 512GB each
-- **1TB total unified memory** pooled via [exo](https://github.com/exo-explore/exo) over Thunderbolt
-- Model layers split across both machines — both compute, different layers
-- Thunderbolt 5 connection keeps latency minimal
+### Hardware: Mac Studio M3 Ultra, 512GB unified memory
+- 32-core CPU, 80-core GPU
+- 819 GB/s memory bandwidth
+- ~$9,500 configured
+- Silent, compact, always-on
+- Multi-user via Open WebUI (Kyle + dad, separate accounts)
 
 ### Models (always available, no swapping needed)
 
-**Daily Driver:**
-- **Qwen3-Coder-Next** (~20GB Q4) — The local model practitioners genuinely prefer over cloud. 256K context. Code, writing, reasoning, client work. Fast responses for everyday use.
+**Primary Creative Partner:**
+- **Kimi K2-0905** — #1 open model for creative writing (8.331 on Lechmazur V4). Beats Gemini 3 Pro, Gemini 2.5 Pro, Mistral Medium 3.1, and every Claude 4.5 variant. MoE ~1T total, ~60B active. Fits in 512GB at Q4 (~500GB). Speed TBD on this hardware but expected 10-15 tok/s (large model, acceptable for creative work).
 
-**Creative Powerhouse:**
-- **Qwen3-235B full precision** (~470GB FP16) — This is why you have 1TB. No quantization, no quality loss. The model that competes with Claude Opus and GPT-5, running at full fidelity. For screenwriting, character work, complex creative projects. Uncensored fine-tunes available — your AI writing partner with zero guardrails.
-- **DeepSeek V3.1** (~400GB+ FP16) — 685B params. The absolute ceiling of local AI. When you need the best reasoning possible.
+**Balanced Writer + Code:**
+- **MiniMax M2.1** (7.777 creative writing) — MoE 230B, ~10B active. Verified: **38-42 tok/s at 4K context, 30 tok/s at 16K context** on exact M3 Ultra 512GB hardware. Uses ~128GB at 4-bit, ~187GB at 6-bit. The sweet spot of speed and quality.
 
-**Fast/Light:**
-- **Qwen3-32B** (~20GB Q4) — Quick tasks, summaries, emails. Instant responses.
+**Fast Daily Driver:**
+- **GPT-OSS-120B** (7.030 creative writing) — OpenAI's open-source MoE, ~5.1B active. 61GB model data (native MXFP4). Verified: **~80 tok/s** single user on M2 Ultra (same bandwidth class). Instant, reliable, great for quick tasks and tool use.
+
+**Code Beast:**
+- **Kimi K2.5 Thinking** or **GLM-4.7** — Top open-source coding models. K2.5 also scores 8.068 on creative writing. GLM-4.7 benchmarked at 16-17 tok/s on M3 Ultra 512GB at lower contexts.
+
+**Heavy Reasoning (on demand):**
+- **DeepSeek V3.2** (685B, 7.601 writing) — The absolute ceiling when you need the best thinking. Slower, loads on demand.
 
 **Vision:**
-- **Qwen2.5-VL** — Analyze images, read documents, understand visual content.
+- **Qwen2.5-VL / Qwen3-VL** — Best open vision model. Images, documents, screenshots.
 
-**Why 1TB matters for film:**
-Large uncensored models write better dialogue. More nuanced characters. Better at dark, edgy, mature content without sanitizing it. They hold longer narrative context — an entire screenplay in memory. The difference between a 32B and 235B model for creative writing is like the difference between a film student and a veteran screenwriter. You'll feel it immediately.
+**Why 512GB matters for film:**
+Large uncensored models write better dialogue. More nuanced characters. Better at dark, edgy, mature content without sanitizing it. They hold longer narrative context — an entire screenplay in memory. The difference between a small model and Kimi K2-0905 for creative writing is like the difference between a film student and a veteran screenwriter. You'll feel it immediately.
 
 ### TTS (Also on Mac)
 - **Qwen3-TTS** — 97ms latency, OpenAI-compatible API. Natural language voice direction ("say this nervously, like you're hiding something"). Voice cloning from 3-second samples. Runs as a local server, OpenClaw connects natively.
-- **IndexTTS2** — World-first emotion cloning. Provide a voice reference + an emotion reference. The most realistic local TTS for when you need it perfect.
+- **IndexTTS2** — Emotion cloning. Provide a voice reference + an emotion reference. The most realistic local TTS for critical scenes.
 
 ---
 
 ## THE GENERATOR (GPU Workstation)
 
-### Hardware: RTX PRO 6000 Blackwell, 96GB GDDR7
-- Single card, 96GB VRAM
-- Blackwell architecture (newest, most efficient)
+### Hardware: Threadripper PRO 7975WX + RTX PRO 6000 Blackwell 96GB
+- AMD Threadripper PRO 7975WX (32-core)
+- ASUS WRX90E-SAGE SE motherboard (7x PCIe 5.0 x16 slots)
+- 64GB DDR5 ECC RAM
+- 1x NVIDIA RTX PRO 6000 96GB GDDR7
+- ~$16,000 total
+- Outperforms H100 SXM on single-GPU inference (verified: 3,140 vs 2,987 tok/s)
 - Runs ComfyUI with all generation models
 - OpenClaw sends requests via ComfyUI's REST API over local network
 
 ### Image Generation
 The pro workflow (how practitioners actually work):
 
-1. **Qwen-Image** — Composition and prompt adherence. Best text rendering. 13 sec/image with Nunchaku. (16-24GB)
-2. **Wan 2.2 14B** (1-frame, low denoise) — Feed step 1 through for photorealism. Skin, lighting, materials improve dramatically. (16GB)
-3. **SeedVR2** — Upscale to 4K. (24-48GB)
-4. **HiDream-E1.1** — Fix details with natural language. "Remove the watch. Change the background." (16-24GB)
+1. **Flux 2 Dev** — Best prompt adherence, text rendering, scene composition. 32B params, 90GB at FP16 (fits the 96GB card at full precision or FP8 at ~45GB). Weak on human anatomy. (Non-human subjects)
+2. **Z-Image** — Best photorealism, best human bodies/skin. Uses Qwen3 4B text encoder, natively generates at 1920px. ~95 sec per 1280x1920 on RTX 5090. (Human subjects)
+3. **SeedVR2** — Upscale to 4K.
+4. **HiDream-E1.1** — Fix details with natural language. "Remove the watch. Change the background."
 
-For brand consistency: **Flux 2 Dev** — Feed up to 10 reference images. Maintains character/style without fine-tuning. (24GB at 4-bit)
+For brand consistency: **Flux 2 Dev** — Feed up to 10 reference images. Maintains character/style without fine-tuning.
 
-With 96GB, you can keep multiple models loaded. No swapping for most workflows.
+With 96GB, you can run Flux 2 Dev at full FP16 quality. No quantization needed for any gen model.
 
 ### Video Generation
 - **Wan 2.2 14B** (i2v) — The model. Being used for real paid client work on single 4090s right now. 449-upvote Reddit post proving it. (24-48GB)
@@ -96,7 +109,7 @@ The hardest problem in local AI video. Three approaches, all improving fast:
 
 **Option 1: HuMo (ByteDance, 17B)** — Best quality
 - "Looks way better than Wan S2V and InfiniteTalk, especially the facial emotion and actual lip movements fitting the speech." (280 upvotes)
-- 68GB model — fits on the PRO 6000 with room to spare
+- 1.7B version: 24-32GB. Full 17B at 720p: ~96GB. Both fit on PRO 6000.
 - Kijai building ComfyUI node
 - Best for: hero shots, close-ups, dialogue-driven scenes
 
@@ -111,7 +124,7 @@ The hardest problem in local AI video. Three approaches, all improving fast:
 - Best for: quick turnaround, lower resource usage
 
 **The realistic dialogue workflow:**
-1. Write dialogue (Qwen3-235B on Mac — uncensored, natural voice)
+1. Write dialogue (Kimi K2-0905 on Mac — #1 open creative writing model, uncensored)
 2. Generate voice (Qwen3-TTS or IndexTTS2 on Mac — sounds human)
 3. Generate/animate the talking head (HuMo or InfiniteTalk on GPU)
 4. Audio drives the animation — lip sync matches automatically
@@ -138,9 +151,9 @@ You (Discord)
     ▼
 OpenClaw (Mac Studio — always on)
     │
-    ├── "Write me a screenplay"        → Ollama → Qwen3-235B (Mac cluster)
-    ├── "Quick email draft"            → Ollama → Qwen3-Coder-Next (Mac)
-    ├── "Generate a product shot"      → ComfyUI API → GPU workstation
+    ├── "Write me a screenplay"        → Ollama → Kimi K2-0905 (Mac)
+    ├── "Quick email draft"            → Ollama → GPT-OSS-120B (Mac, ~80 tok/s)
+    ├── "Generate a product shot"      → ComfyUI API → Flux 2 Dev / Z-Image (GPU)
     ├── "Make a 5-sec video of this"   → ComfyUI API → Wan 2.2 (GPU)
     ├── "Add dialogue to this clip"    → Qwen3-TTS (Mac) + HuMo (GPU)
     ├── "Add ambient audio"            → ComfyUI API → MMAudio (GPU)
@@ -166,54 +179,56 @@ One chat. No switching apps. I route to the right tool on the right machine.
 
 ## HARDWARE SUMMARY
 
-### Mac Studio Cluster
+### Mac Studio
 | Item | Cost |
 |------|------|
-| Mac Studio M4 Ultra 512GB × 2 | ~$20,000-24,000 |
-| Thunderbolt 5 cable | ~$50 |
-| **Subtotal** | **~$20,000-24,000** |
+| Mac Studio M3 Ultra (base: 28-core, 96GB, 1TB) | $3,999 |
+| Upgrade: 32-core CPU + 80-core GPU | $1,500 |
+| Upgrade: 512GB unified memory | $4,000 |
+| **Subtotal** | **~$9,500** |
 
-### GPU Workstation
+### NVIDIA Workstation
 | Item | Cost |
 |------|------|
-| RTX PRO 6000 96GB | ~$6,500-7,000 |
-| AMD Threadripper or Ryzen 9 | ~$500-800 |
-| 128GB DDR5 RAM | ~$300-400 |
-| 2TB NVMe SSD | ~$150-200 |
-| 1000W PSU (Platinum) | ~$200-250 |
-| Case + cooling | ~$200-300 |
-| **Subtotal** | **~$8,000-9,000** |
+| AMD Threadripper PRO 7975WX | ~$3,735 |
+| ASUS WRX90E-SAGE SE motherboard | ~$1,291 |
+| 64GB DDR5 ECC RAM | ~$400 |
+| NVIDIA RTX PRO 6000 96GB GDDR7 | ~$8,500 |
+| 4TB NVMe SSD | ~$300 |
+| 1600W 80+ Titanium PSU | ~$400 |
+| Case + cooling | ~$400 |
+| **Subtotal** | **~$16,000** |
 
-### Total: ~$28,000-33,000
+### Total: ~$25,500
 
 ---
 
 ## THE ROI
 
-**One-time hardware: ~$30K**
+**One-time hardware: ~$25,500**
 
-**Replaces monthly cloud subscriptions:**
-| Service | Monthly Cost |
-|---------|-------------|
-| Claude Pro / ChatGPT Pro | $100-200 |
-| Runway Gen-4.5 / Kling Pro | $28-150 |
-| Midjourney | $10-60 |
-| ElevenLabs | $5-99 |
-| Stock footage/images | $50-200 |
-| Cloud GPU rental (if scaling) | $100-500 |
-| **Total replaced** | **$300-1,200/mo** |
+**Replaces monthly cloud subscriptions (what C41 actually uses):**
+| Service | Monthly Cost | What You Get | The Limit |
+|---------|-------------|-------------|-----------|
+| Claude Max | $200 | AI chat (1 user) | Throttled after heavy use |
+| Google AI Ultra (Veo 3) | $250 | 250 full-quality videos/mo | 5/day cap, failed gens count |
+| ElevenLabs Pro | $99 | ~4 hours speech/month | $0.24/1K char overage |
+| Nano Banana Pro | $24 | ~125 images/month | Credits run out mid-project |
+| **Total (1 user)** | **$573/mo** | | |
+| **Total (2 users)** | **$1,146/mo** | | **$13,752/year** |
 
-**Break-even: 2-8 years** at minimum usage, **under 2 years** at production usage.
+**Break-even: under 2 years.** By year 3, you've saved over $15,000 and counting.
 
 **But the real value isn't cost savings:**
 - Custom LoRAs — brand consistency no cloud service can match
 - Unlimited generation — no credits, no rate limits, no "you've run out"
-- Client data never leaves your machine — real privacy guarantee
+- Client data never leaves your building — real privacy guarantee
 - Uncensored creative AI — write anything without guardrails
 - Full parameter control — every setting exposed, every workflow customizable
 - Train on client assets without uploading to third parties
-- 1TB of LLM memory — run the absolute best models at full precision
+- 512GB of LLM memory — run #1 ranked open creative writing model at full quality
 - Future-proof — new open-source models drop weekly, just download and run
+- 7 GPU expansion slots — add capacity without replacing anything
 
 ---
 
