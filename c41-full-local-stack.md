@@ -190,22 +190,23 @@ One chat. No switching apps. I route to the right tool on the right machine.
 ### NVIDIA Workstation
 | Item | Cost |
 |------|------|
-| AMD Threadripper PRO 7975WX | ~$3,735 |
-| ASUS WRX90E-SAGE SE motherboard | ~$1,291 |
-| 64GB DDR5 ECC RAM | ~$400 |
-| NVIDIA RTX PRO 6000 96GB GDDR7 | ~$8,500 |
-| 4TB NVMe SSD | ~$300 |
-| 1600W 80+ Titanium PSU | ~$400 |
-| Case + cooling | ~$400 |
-| **Subtotal** | **~$16,000** |
+| AMD Threadripper PRO 7975WX | $3,735 |
+| ASUS WRX90E-SAGE SE motherboard | $1,291 |
+| Noctua NH-U14S TR5-SP6 CPU cooler | $130 |
+| 64GB DDR5 ECC RDIMM (2x32GB) | $150 |
+| NVIDIA RTX PRO 6000 96GB GDDR7 | $8,500 |
+| Samsung 990 Pro 4TB NVMe SSD | $280 |
+| Seasonic Prime TX-1600 Titanium PSU | $680 |
+| Server rack case (already owned) | $0 |
+| **Subtotal** | **$14,766** |
 
-### Total: ~$25,500
+### Total: ~$24,266
 
 ---
 
 ## THE ROI
 
-**One-time hardware: ~$25,500**
+**One-time hardware: ~$24,266**
 
 **Replaces monthly cloud subscriptions (what C41 actually uses):**
 | Service | Monthly Cost | What You Get | The Limit |
@@ -217,7 +218,7 @@ One chat. No switching apps. I route to the right tool on the right machine.
 | **Total (1 user)** | **$573/mo** | | |
 | **Total (2 users)** | **$1,146/mo** | | **$13,752/year** |
 
-**Break-even: under 2 years.** By year 3, you've saved over $15,000 and counting.
+**Break-even: under 2 years.** By year 3, you've saved over $17,000 and counting.
 
 **But the real value isn't cost savings:**
 - Custom LoRAs — brand consistency no cloud service can match

@@ -145,11 +145,11 @@ All of these capabilities run through ComfyUI, an industry-standard interface th
 |---|---|---|---|---|
 | Cloud subscriptions (2 users, base plans) | $13,752 | $13,752 | $13,752 | $41,256 |
 | Cloud subs + overages and extra credits | $18,000+ | $18,000+ | $18,000+ | $54,000+ |
-| **Own the hardware** | **$25,500** | **$0** | **$0** | **$25,500** |
+| **Own the hardware** | **$24,266** | **$0** | **$0** | **$24,266** |
 
 Based on actual services C41 uses today: Claude Max $200/mo + Google AI Ultra $250/mo + ElevenLabs Pro $99/mo + Nano Banana Pro $24/mo = $573/mo per user. Two users = $1,146/month = $13,752/year. And this still comes with all the throttling, daily caps, and credit limits described above.
 
-**The hardware pays for itself in under 2 years.** After that, every month is pure savings — $1,146/month going straight to the bottom line instead of subscription fees. By year 3, the total savings exceed $15,000. And the hardware retains significant resale value (professional GPU and Apple hardware typically hold 50-70% of value after 2-3 years).
+**The hardware pays for itself in under 2 years.** After that, every month is pure savings — $1,146/month going straight to the bottom line instead of subscription fees. By year 3, the total savings exceed **$17,000**. And the hardware retains significant resale value (professional GPU and Apple hardware typically hold 50-70% of value after 2-3 years).
 
 **The real advantage isn't just cost. It's capacity.**
 
@@ -161,10 +161,17 @@ On cloud subscriptions, there's a ceiling on how much work you can do in a day b
 
 | Item | Cost |
 |---|---|
+| **AI Language Server** | |
 | Mac Studio M3 Ultra (512GB, 32-core CPU, 80-core GPU) | $9,500 |
-| AI Workstation (Threadripper PRO 7975WX platform) | $7,500 |
+| **AI Content Generation Server** | |
+| AMD Threadripper PRO 7975WX (32-core CPU) | $3,735 |
+| ASUS WRX90E-SAGE SE motherboard (7 GPU slots) | $1,291 |
+| Noctua NH-U14S TR5-SP6 CPU cooler | $130 |
+| 64GB DDR5 ECC RAM (2x 32GB) | $150 |
 | NVIDIA RTX PRO 6000 GPU (96GB GDDR7) | $8,500 |
-| **Total** | **$25,500** |
+| Seasonic Prime TX-1600 Titanium power supply | $680 |
+| Samsung 990 Pro 4TB NVMe SSD | $280 |
+| **Total** | **$24,266** |
 
 This is a one-time capital expenditure with no ongoing subscription fees.
 

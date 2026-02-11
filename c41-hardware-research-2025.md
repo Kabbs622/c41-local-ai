@@ -53,7 +53,20 @@ After extensive research into real-world builds, practitioner benchmarks, and co
 - 4TB NVMe SSD
 - Rack-mountable or quiet tower case
 
-**Estimated cost:** ~$16,000 (CPU ~$3,735 + mobo ~$1,291 + RAM ~$400 + GPU ~$8,500 + case/PSU/storage ~$2,000)
+**Estimated cost:** ~$14,700 (see component breakdown below)
+
+**Component Breakdown:**
+| Part | Model | Price |
+|------|-------|-------|
+| CPU | AMD Threadripper PRO 7975WX | $3,735 |
+| Motherboard | ASUS WRX90E-SAGE SE (7x PCIe 5.0 x16) | $1,291 |
+| CPU Cooler | Noctua NH-U14S TR5-SP6 | $130 |
+| RAM | 2x 32GB DDR5 ECC RDIMM 5200 (64GB) | $150 |
+| GPU | NVIDIA RTX PRO 6000 96GB GDDR7 | $8,500 |
+| PSU | Seasonic Prime TX-1600 (80+ Titanium) | $680 |
+| SSD | Samsung 990 Pro 4TB NVMe | $280 |
+| Case | Existing server rack case | $0 |
+| **Total** | | **~$14,766** |
 
 **What it runs (all on one 96GB GPU):**
 - Flux 2 Dev (image gen, non-human subjects): 90GB full precision, ~32GB quantized (fits 96GB GPU)
@@ -82,10 +95,16 @@ After extensive research into real-world builds, practitioner benchmarks, and co
 
 | Component | Estimated Cost |
 |---|---|
-| Mac Studio M3 Ultra 512GB (32c CPU, 80c GPU) | ~$9,500 |
-| NVIDIA Workstation (platform: CPU, mobo, RAM, case, PSU, storage) | ~$7,500 |
-| RTX PRO 6000 96GB GDDR7 | ~$8,500 |
-| **Total** | **~$25,500** |
+| Mac Studio M3 Ultra 512GB (32c CPU, 80c GPU) | $9,500 |
+| Threadripper PRO 7975WX | $3,735 |
+| ASUS WRX90E-SAGE SE motherboard | $1,291 |
+| Noctua NH-U14S TR5-SP6 cooler | $130 |
+| 64GB DDR5 ECC RDIMM (2x32GB) | $150 |
+| NVIDIA RTX PRO 6000 96GB GDDR7 | $8,500 |
+| Seasonic Prime TX-1600 Titanium PSU | $680 |
+| Samsung 990 Pro 4TB NVMe SSD | $280 |
+| Server rack case (already owned) | $0 |
+| **Total** | **~$24,266** |
 
 ---
 
