@@ -494,7 +494,7 @@
   <h3>Capacity</h3>
   <h2>Cloud limits vs. your hardware</h2>
   
-  <div style="max-width: 750px; margin-top: 40px;">
+  <div style="max-width: 850px; margin-top: 40px;">
     <div class="vs-row">
       <div class="vs-cloud">~200/day before throttle</div>
       <div class="vs-label">AI Chat</div>
@@ -520,6 +520,47 @@
       <div class="vs-label">Your Data</div>
       <div class="vs-local">Never leaves your building</div>
     </div>
+  </div>
+  
+  <div class="card" style="max-width: 850px; margin-top: 36px;">
+    <h4 style="margin-bottom: 16px; color: var(--accent);">What happens when you hit the limit</h4>
+    <table class="compare-table">
+      <tr>
+        <th>Service</th>
+        <th>The Limit</th>
+        <th>What Happens Next</th>
+      </tr>
+      <tr>
+        <td class="service">Claude ($200/mo)</td>
+        <td class="limit">Hidden daily throttle</td>
+        <td class="limit">Locked out for hours. Can't work. Anthropic won't say the exact cap.</td>
+      </tr>
+      <tr>
+        <td class="service">Veo 3 ($250/mo)</td>
+        <td class="limit">5 videos per day</td>
+        <td class="limit">Users report being locked out for <strong>days</strong>. Failed gens count against your quota.</td>
+      </tr>
+      <tr>
+        <td class="service">ElevenLabs ($99/mo)</td>
+        <td class="limit">500K characters (~4 hrs)</td>
+        <td class="limit">Overages at $0.24/1K chars. A busy agency week can burn the whole month in days.</td>
+      </tr>
+      <tr>
+        <td class="service">Runway ($95/mo)</td>
+        <td class="limit">12 credits/sec of video</td>
+        <td class="limit">One 10-second Gen-4 clip = 120 credits. Extra credits cost $0.01 each via API.</td>
+      </tr>
+      <tr>
+        <td class="service">Midjourney ($60/mo)</td>
+        <td class="limit">30 GPU hours</td>
+        <td class="limit">Heavy use burns through in ~10 days. Then slow mode: minutes per image.</td>
+      </tr>
+    </table>
+    <p class="fine-print" style="margin-top: 12px;">Sources: Anthropic (TechCrunch, July 2025), Google Gemini support forums, ElevenLabs pricing page, Runway credits docs, Midjourney plan docs. All verified February 2026.</p>
+  </div>
+  
+  <div class="highlight-box red" style="max-width: 850px; margin-top: 24px;">
+    <p style="font-size: 1.05rem;"><strong>The real cost isn't the subscription. It's the work you can't do.</strong> Every time you hit a limit mid-project, you're either waiting (burning hours) or paying overages (burning budget). With local hardware: no limits, no overages, no waiting. Ever.</p>
   </div>
 </section>
 
