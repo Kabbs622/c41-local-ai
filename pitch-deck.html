@@ -325,6 +325,77 @@
     margin-top: 40px;
     font-style: italic;
   }
+  
+  /* ===== MOBILE OPTIMIZATION ===== */
+  @media (max-width: 768px) {
+    .slide { min-height: auto; padding: 48px 20px; }
+    .slide-number { top: 16px; right: 20px; font-size: 11px; }
+    
+    h2 { font-size: 1.5rem; }
+    h3 { font-size: 0.9rem; letter-spacing: 2px; }
+    .subtitle { font-size: 1rem; }
+    .title-slide h1 { font-size: 2.2rem; }
+    
+    /* Tables scroll horizontally */
+    .card { padding: 20px; overflow-x: auto; }
+    .compare-table { font-size: 0.8rem; min-width: 500px; }
+    .compare-table th, .compare-table td { padding: 10px 12px; }
+    
+    /* Stat row stacks */
+    .stat-row { flex-direction: column; gap: 24px; }
+    .stat-block { min-width: unset; }
+    .big-number { font-size: clamp(2rem, 10vw, 3.5rem); }
+    
+    /* VS comparison stacks */
+    .vs-row {
+      grid-template-columns: 1fr;
+      text-align: center;
+      gap: 8px;
+      padding: 12px 0;
+    }
+    .vs-cloud { text-align: center; }
+    .vs-local { text-align: center; }
+    .vs-label {
+      order: -1;
+      font-weight: 600;
+      color: var(--text);
+      font-size: 0.85rem;
+    }
+    
+    /* Cost lines */
+    .cost-line { font-size: 0.85rem; gap: 12px; }
+    .cost-line .item { flex: 1; }
+    .cost-line .price { white-space: nowrap; }
+    
+    /* Timeline */
+    .timeline-item { flex-direction: column; gap: 8px; }
+    .timeline-week { min-width: unset; }
+    
+    /* Highlight boxes */
+    .highlight-box { padding: 20px; }
+    .highlight-box p { font-size: 0.95rem !important; }
+    
+    /* Nav dots — smaller and wrap */
+    .slide-nav {
+      bottom: 10px;
+      right: 10px;
+      flex-wrap: wrap;
+      max-width: 120px;
+      justify-content: flex-end;
+    }
+    .slide-nav a { width: 8px; height: 8px; }
+    
+    /* Grid gap reduction */
+    .grid-2, .grid-3 { gap: 16px; }
+  }
+  
+  @media (max-width: 480px) {
+    .slide { padding: 36px 16px; }
+    .compare-table { font-size: 0.75rem; min-width: 420px; }
+    h2 { font-size: 1.3rem; }
+    .card { padding: 16px; }
+    .big-number { font-size: clamp(1.8rem, 9vw, 2.8rem); }
+  }
 </style>
 </head>
 <body>
