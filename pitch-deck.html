@@ -342,9 +342,10 @@
   <span class="slide-number">02</span>
   <h3>The Problem</h3>
   <h2>Cloud AI is designed to keep you paying</h2>
-  <p class="subtitle" style="margin-bottom: 40px;">These are the AI generation tools that local hardware directly replaces. Each one has hard limits, throttles, and per-unit pricing.</p>
+  <p class="subtitle" style="margin-bottom: 40px;">These are the subscriptions that local hardware and open-source software directly replace. Every one has limits, throttles, or per-unit pricing.</p>
   
-  <div class="card" style="max-width: 800px;">
+  <div class="card" style="max-width: 900px;">
+    <h4 style="margin-bottom: 16px;">AI Generation Tools</h4>
     <table class="compare-table">
       <tr>
         <th>Service</th>
@@ -359,17 +360,63 @@
       <tr>
         <td class="service">Google Veo 3 Ultra (AI video)</td>
         <td class="cost">$250/mo</td>
-        <td class="limit">250 videos/month. 5 per day. Failed gens count.</td>
+        <td class="limit">250 videos/month. 5/day cap. Failed gens count.</td>
       </tr>
       <tr>
         <td class="service">ElevenLabs Pro (AI voice)</td>
         <td class="cost">$99/mo</td>
-        <td class="limit">~4 hours of voice. $0.24/1K chars after that.</td>
+        <td class="limit">~4 hours of voice. Overages at $0.24/1K chars.</td>
+      </tr>
+      <tr>
+        <td class="service">Runway Unlimited (AI video)</td>
+        <td class="cost">$76/mo</td>
+        <td class="limit">"Unlimited" but Gen-4 only. Gen-4.5 costs extra credits.</td>
+      </tr>
+      <tr>
+        <td class="service">Midjourney Pro (AI images)</td>
+        <td class="cost">$60/mo</td>
+        <td class="limit">30 GPU hours. Fast mode runs out quickly.</td>
+      </tr>
+      <tr>
+        <td class="service">Jasper Pro (AI copywriting)</td>
+        <td class="cost">$69/mo</td>
+        <td class="limit">One seat. Extra seats $69 each.</td>
       </tr>
       <tr>
         <td class="service">Nano Banana Pro (AI images)</td>
         <td class="cost">$24/mo</td>
         <td class="limit">~125 images/month. Then you wait.</td>
+      </tr>
+    </table>
+  </div>
+  
+  <div class="card" style="max-width: 900px; margin-top: 20px;">
+    <h4 style="margin-bottom: 16px;">Agency Tools Replaced by Self-Hosted Software</h4>
+    <table class="compare-table">
+      <tr>
+        <th>Service</th>
+        <th>Monthly Cost</th>
+        <th>Local Replacement (free, runs on same hardware)</th>
+      </tr>
+      <tr>
+        <td class="service">Mailchimp (email marketing)</td>
+        <td class="cost">$20/mo</td>
+        <td class="limit">→ Listmonk (self-hosted, unlimited sends)</td>
+      </tr>
+      <tr>
+        <td class="service">Zapier (automation)</td>
+        <td class="cost">$20/mo</td>
+        <td class="limit">→ n8n (self-hosted, unlimited workflows)</td>
+      </tr>
+      <tr>
+        <td class="service">Descript (transcription/editing)</td>
+        <td class="cost">$33/mo</td>
+        <td class="limit">→ Whisper (local, unlimited hours)</td>
+      </tr>
+      <tr>
+        <td class="service">Otter.ai (meeting transcription)</td>
+        <td class="cost">$20/mo</td>
+        <td class="limit">→ Whisper (local, unlimited hours)</td>
       </tr>
     </table>
   </div>
@@ -384,15 +431,15 @@
   
   <div class="stat-row">
     <div class="stat-block">
-      <div class="big-number red">$573</div>
+      <div class="big-number red">$871</div>
       <div class="stat-label">per month, per user</div>
     </div>
     <div class="stat-block">
-      <div class="big-number red">$1,146</div>
+      <div class="big-number red">$1,742</div>
       <div class="stat-label">per month for two users</div>
     </div>
     <div class="stat-block">
-      <div class="big-number red">$13,752</div>
+      <div class="big-number red">$20,904</div>
       <div class="stat-label">per year — still throttled</div>
     </div>
   </div>
@@ -589,9 +636,9 @@
         </tr>
         <tr>
           <td class="service">Cloud (2 users)</td>
-          <td class="cost">$13,752</td>
-          <td class="cost">$27,504</td>
-          <td class="cost">$41,256</td>
+          <td class="cost">$20,904</td>
+          <td class="cost">$41,808</td>
+          <td class="cost">$62,712</td>
         </tr>
         <tr>
           <td class="service" style="color: var(--green);">Option A: Foundation</td>
@@ -610,16 +657,16 @@
     
     <div class="grid-2">
       <div class="highlight-box">
-        <div class="big-number green" style="font-size: 2.5rem;">$18,560</div>
+        <div class="big-number green" style="font-size: 2.5rem;">$40,016</div>
         <div class="stat-label">Option A saves by year 3</div>
       </div>
       <div class="highlight-box" style="background: var(--green-soft); border-color: rgba(39,174,96,0.3);">
-        <div class="big-number green" style="font-size: 2.5rem;">$1,010</div>
-        <div class="stat-label">Option B saves by year 3, more every month after</div>
+        <div class="big-number green" style="font-size: 2.5rem;">$22,466</div>
+        <div class="stat-label">Option B saves by year 3</div>
       </div>
     </div>
     
-    <p class="fine-print">Cloud costs assume no overages or price increases (they always increase). Actual cloud spending is typically higher. Hardware total includes all components. Electricity (~$30-60/month) is negligible. Adding more users to local costs $0; adding more cloud users costs another $573/month each.</p>
+    <p class="fine-print">Cloud costs assume no overages or price increases (they always increase). Actual cloud spending is typically higher. Hardware total includes all components. Electricity (~$30-60/month) is negligible. Adding more users to local costs $0; adding more cloud users costs another $871/month each.</p>
   </div>
 </section>
 
